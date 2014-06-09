@@ -9,6 +9,7 @@ class Card
 		Card.parse_card(@number) + @suit
 	end
 
+
 	def self.parse_card(number)
 	  case number
 		when 2..10 then number
@@ -22,8 +23,8 @@ end
 
 class Deck
 	SUITS = ["D", "C", "H", "S"]
-	NUMBERS = [2..14]
-
+	NUMBERS = (2..14).to_a
+	attr_accessor :deck 
 	def initialize
 		@deck = []
 		SUITS.each do |suit|
@@ -31,6 +32,7 @@ class Deck
 				@deck << Card.new(suit, num)
 			end
 		end
+		
 	end
 
 end
@@ -41,10 +43,10 @@ class Dealer
 	end
 
 	def deal(player1,player2)
-		@deck.shuffle!
-		to_deal = @deck.pop(10)
-		player1.hand += to_deal[0..9].select(&:even?)
-		player2.hand += to_deal[0..4]
+		@deck.deck.shuffle!
+		to_deal = @deck.deck.pop(10)
+		player1.hand = to_deal[5..9]
+		player2.hand = to_deal[0..4]
 	end
 	
 end

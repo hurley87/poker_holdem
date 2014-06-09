@@ -1,5 +1,9 @@
+require_relative'player'
+require_relative'ranker'
+require_relative 'texas_holdem'
+
 class Game
-	def initialize(dealer)
+	def initialize
 		@dealer = Dealer.new
 		@player1 = Player.new
 		@player2 = Player.new
@@ -7,6 +11,12 @@ class Game
 	def start_game
 		@dealer.deal(@player1, @player2)
 	end
-	def hand_value(hand)
+	def hand_value
+		@player1.hand
+		p Ranker.score(@player1.hand)
 	end
 end
+
+new_game = Game.new
+new_game.start_game
+new_game.hand_value
