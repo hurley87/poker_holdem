@@ -1,8 +1,9 @@
 class Ranker
 
 	def self.score(cards)
-
-		if self.straight_flush?(cards)
+		if self.royal_flush?(cards)
+			1_000_000
+		elsif self.straight_flush?(cards)
 			1000
 		elsif self.four_of_a_kind?(cards)
 			900
@@ -22,6 +23,9 @@ class Ranker
 			200
 		end		
 	end
+	def self.royal_flush?(cards)
+		Ranker.straight_flush?(cards) && Ranker.cards_in_numbers(cards).sort == [10,11,12,13,14]
+	end
 
 	def self.straight_flush?(cards)
 		Ranker.straight?(cards) && Ranker.flush?(cards)
@@ -39,12 +43,13 @@ class Ranker
 
 	def self.four_of_a_kind?(cards)
 		cards = Ranker.cards_in_numbers(cards)
-		cards.size - cards.uniq.size == 3
+		Ranker.card_counter(cards).values.include?(4)
 	end
 
 	def self.three_of_a_kind?(cards)
 		cards = Ranker.cards_in_numbers(cards)
-		cards.size - cards.uniq.size == 3
+		hash = card_counter(cards)
+		hash.values.include?(3) && hash.values.include?(1)
 	end
 
 	def self.pair?(cards)
